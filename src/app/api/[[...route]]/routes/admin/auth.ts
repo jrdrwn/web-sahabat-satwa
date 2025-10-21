@@ -1,4 +1,4 @@
-import prisma from '@db';
+import prisma from '@db/admin';
 import { zValidator } from '@hono/zod-validator';
 import bcrypt from 'bcrypt';
 import { Hono } from 'hono';

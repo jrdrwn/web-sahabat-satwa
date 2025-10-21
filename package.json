@@ -9,9 +9,10 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prisma-cloud:generate": "prisma generate --schema ./prisma-cloud/schema.prisma --sql",
-    "prisma:generate": "prisma generate",
-    "seed": "tsx prisma/seed.ts"
+    "prisma:pull": "prisma db pull --schema ./prisma-admin/schema.prisma && prisma db pull --schema ./prisma-vet/schema.prisma && prisma db pull --schema ./prisma-owner/schema.prisma",
+    "prisma:generate": "prisma generate --schema ./prisma-admin/schema.prisma && prisma generate --schema ./prisma-vet/schema.prisma && prisma generate --schema ./prisma-owner/schema.prisma",
+    "prisma-vet:generate": "prisma generate --schema ./prisma-vet/schema.prisma",
+    "prisma-admin:seed": "tsx prisma-admin/seed.ts"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.17",

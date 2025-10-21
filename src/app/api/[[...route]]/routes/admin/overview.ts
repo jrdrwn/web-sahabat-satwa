@@ -1,4 +1,4 @@
-import prisma from '@db';
+import prisma from '@db/admin';
 import { Hono } from 'hono';
 
 export const overview = new Hono().basePath('/overview');

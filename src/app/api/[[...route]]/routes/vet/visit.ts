@@ -1,10 +1,14 @@
-import prisma from '@db';
+import prisma from '@db/vet';
 import { Hono } from 'hono';
+
+import { JWTPayload } from '../../types';
 
 export const visit = new Hono().basePath('/visit');
 
 visit.get('/', async (c) => {
-  const data = await prisma.$queryRaw`SELECT * FROM visit`;
+  const jwtPayload = c.get('jwtPayload') as JWTPayload;
+  const data =
+    await prisma.$queryRaw`SELECT * FROM visit WHERE vet_id = ${jwtPayload.sub}`;
   return c.json({ data });
 });
 

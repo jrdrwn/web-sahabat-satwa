@@ -419,7 +419,10 @@ export default function CreateAccountForm() {
               </Button>
               <p className="mt-4 text-center text-sm text-muted-foreground">
                 Sudah punya akun?{' '}
-                <Link href="/login" className="text-primary hover:underline">
+                <Link
+                  href="/login/owner"
+                  className="text-primary hover:underline"
+                >
                   Masuk.
                 </Link>
               </p>

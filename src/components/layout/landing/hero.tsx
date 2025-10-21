@@ -22,19 +22,19 @@ export default function Hero() {
             <BellDot className="size-5 text-primary xl:size-6" />
           </span>
           <p className="text-sm xl:text-base">
-            Sistem Manajemen Praktikan Informatika
+            Platform Peduli & Perlindungan Satwa
           </p>
           <span className="rounded-full bg-primary p-1">
             <ArrowRight className="size-4 text-primary-foreground md:size-5 xl:size-6" />
           </span>
         </div>
         <h1 className="mt-4 mb-4 max-w-3xl bg-gradient-to-br from-primary to-neutral-400 bg-clip-text text-4xl leading-tight font-bold text-transparent md:text-5xl lg:mb-6 lg:text-4xl xl:mb-8 xl:text-6xl xl:tracking-wide 2xl:text-7xl">
-          Kelola Praktikum dengan Mudah dan Terintegrasi
+          Lindungi & Rawat Hewan dengan Mudah
         </h1>
         <p className="mx-auto max-w-2xl leading-relaxed lg:mx-0 xl:text-lg xl:tracking-wide">
-          Platform modern untuk mengelola data praktikan, jadwal, kehadiran,
-          penilaian, dan administrasi praktikum. Didesain agar proses praktikum
-          lebih efisien dan transparan.
+          Platform modern untuk mengelola data adopsi, perawatan, donasi, dan
+          edukasi satwa. Didesain agar proses perlindungan dan pelestarian satwa
+          menjadi lebih mudah, transparan, dan terintegrasi.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 lg:flex-row lg:justify-start 2xl:mt-12">
           <Link
@@ -43,12 +43,12 @@ export default function Hero() {
             rel="noopener noreferrer"
           >
             <Button className="flex items-center gap-2 lg:px-6 lg:py-5 xl:px-8 xl:py-6">
-              <span>Hubungi Developer</span>
+              <span>Hubungi Sahabat Satwa</span>
               <ArrowUpRight className="size-4" />
             </Button>
           </Link>
           <Link
-            href="mailto:developer@example.com"
+            href="mailto:info@sahabatsatwa.org"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -63,10 +63,13 @@ export default function Hero() {
         <div className="mt-8">
           <Alert>
             <AlertTriangle />
-            <AlertTitle>Sistem ini masih dalam tahap pengembangan.</AlertTitle>
+            <AlertTitle>
+              Platform ini masih dalam tahap pengembangan.
+            </AlertTitle>
             <AlertDescription>
               Beberapa fitur mungkin belum tersedia atau mengalami perubahan.
-              Kami menghargai masukan Anda untuk perbaikan sistem ini.
+              Kami sangat menghargai masukan Anda untuk mendukung perlindungan
+              satwa bersama Sahabat Satwa.
             </AlertDescription>
           </Alert>
         </div>

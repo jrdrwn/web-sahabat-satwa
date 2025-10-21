@@ -1,4 +1,4 @@
-import prisma from '@db';
+import prisma from '@db/owner';
 import { zValidator } from '@hono/zod-validator';
 import bcrypt from 'bcrypt';
 import { Hono } from 'hono';
@@ -29,7 +29,7 @@ auth.post(
 
     const validated = c.req.valid('json');
 
-    const user = await prisma.vet.findUnique({
+    const user = await prisma.owners.findUnique({
       where: {
         email: validated.identifier,
       },
@@ -45,7 +45,7 @@ auth.post(
       return c.json({ status: false, message: 'Password not match' }, 401);
     }
     const payload = {
-      sub: user.vet_id,
+      sub: user.owner_id,
       role: Role.OWNER,
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day
     };

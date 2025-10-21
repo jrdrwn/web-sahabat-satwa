@@ -1,0 +1,115 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../node_modules/.prisma/vet"
+  previewFeatures = ["typedSql"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("VET_DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model animal {
+  animal_id   Int       @id @default(autoincrement())
+  animal_name String    @db.VarChar(40)
+  animal_born DateTime? @db.Date
+  owner_id    Int
+  at_id       Int
+  owners      owners    @relation(fields: [owner_id], references: [owner_id], onDelete: NoAction, onUpdate: NoAction)
+  visit       visit[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model visit {
+  visit_id        Int          @id @default(autoincrement())
+  visit_date_time DateTime?    @db.Timestamp(6)
+  visit_notes     String?      @db.VarChar(200)
+  animal_id       Int
+  vet_id          Int
+  from_visit_id   Int?
+  animal          animal       @relation(fields: [animal_id], references: [animal_id], onDelete: NoAction, onUpdate: NoAction)
+  visit           visit?       @relation("visitTovisit", fields: [from_visit_id], references: [visit_id], onDelete: NoAction, onUpdate: NoAction)
+  other_visit     visit[]      @relation("visitTovisit")
+  vet             vet          @relation(fields: [vet_id], references: [vet_id], onDelete: NoAction, onUpdate: NoAction)
+  visit_drug      visit_drug[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model owners {
+  owner_id         Int      @id @default(autoincrement())
+  owner_givenname  String   @db.VarChar(30)
+  owner_familyname String   @db.VarChar(30)
+  owner_address    String?  @db.VarChar(100)
+  owner_phone      String?  @db.VarChar(14)
+  email            String?  @unique @db.VarChar(100)
+  password         String?  @db.VarChar(255)
+  animal           animal[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model vet {
+  vet_id         Int       @id @default(autoincrement())
+  vet_title      String?   @db.Char(4)
+  vet_givenname  String    @db.VarChar(30)
+  vet_familyname String    @db.VarChar(30)
+  vet_phone      String?   @db.VarChar(14)
+  vet_employed   DateTime? @db.Date
+  spec_id        Int?
+  clinic_id      Int?
+  email          String?   @unique @db.VarChar(100)
+  password       String?   @db.VarChar(255)
+  visit          visit[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model visit_drug {
+  visit_id               Int
+  drug_id                Int
+  visit_drug_dose        String? @db.VarChar(20)
+  visit_drug_frequency   String? @db.VarChar(20)
+  visit_drug_qtysupplied Int?
+  visit                  visit   @relation(fields: [visit_id], references: [visit_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([visit_id, drug_id])
+}
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model prisma_migrations {
+// @@map("_prisma_migrations")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model admin {
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+// model animal_type {
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+// model clinic {
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+// model drug {
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+// model spec_visit {
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+// model specialisation {
+// }
+
+enum role {
+  admin
+  vet
+  owner
+}

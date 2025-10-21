@@ -20,10 +20,10 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@sql": ["./node_modules/.prisma/client/sql/"],
       "@db": ["./prisma/"],
-      "@sql/cloud": ["./node_modules/.prisma/cloud/sql/"],
-      "@db/cloud": ["./prisma-cloud/"]
+      "@db/admin": ["./prisma-admin/"],
+      "@db/vet": ["./prisma-vet/"],
+      "@db/owner": ["./prisma-owner/"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

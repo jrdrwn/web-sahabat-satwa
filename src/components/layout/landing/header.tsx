@@ -27,15 +27,15 @@ export default function Header() {
     },
     {
       title: 'Admin',
-      href: '/admin',
+      href: '/admin/login',
     },
     {
       title: 'Vet',
-      href: '/vet',
+      href: '/vet/login',
     },
     {
       title: 'Owner',
-      href: '/owner',
+      href: '/owner/login',
     },
   ];
 

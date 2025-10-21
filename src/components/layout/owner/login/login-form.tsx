@@ -63,7 +63,7 @@ export default function LoginForm() {
       toast('Login Berhasil', {
         icon: <BadgeCheck />,
       });
-      router.push('/owner');
+      router.push('/owner/animal');
       router.refresh();
     } else {
       toast('Login Gagal', {
@@ -117,6 +117,13 @@ export default function LoginForm() {
             </Button>
           </form>
         </Form>
+        <p className="mt-2 text-center text-sm">
+          Belum punya akun?{' '}
+          <a href="/owner/register" className="text-primary underline">
+            Daftar di sini
+          </a>
+          .
+        </p>
       </CardContent>
     </Card>
   );

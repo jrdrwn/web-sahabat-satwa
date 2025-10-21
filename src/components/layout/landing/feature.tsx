@@ -16,28 +16,28 @@ export default function Feature() {
               src={
                 'https://images.unsplash.com/photo-1519389950473-47ba0277781c'
               }
-              alt="Sistem Manajemen Praktikum"
+              alt="Perlindungan Satwa"
               width={1024}
               height={1024}
               className="h-60 rounded-lg object-cover object-center"
             />
             <CardTitle className="text-xl sm:text-2xl">
-              Kenapa Sistem Ini Dibuat?
+              Kenapa Sahabat Satwa Diciptakan?
             </CardTitle>
             <CardDescription className="text-base xl:text-lg">
-              Praktikum melibatkan banyak pihak: admin, asisten, dan praktikan.
-              Sistem ini hadir untuk memudahkan pengelolaan data, jadwal,
-              kehadiran, dan penilaian secara terintegrasi.
+              Banyak satwa membutuhkan perlindungan, perawatan, dan rumah baru.
+              Sahabat Satwa hadir untuk memudahkan kolaborasi relawan, donatur,
+              dan pecinta hewan dalam satu platform.
             </CardDescription>
             <CardDescription className="text-base xl:text-lg">
-              Semua proses administrasi dan monitoring praktikum kini bisa
-              dilakukan secara digital, transparan, dan efisien. Sistem ini juga
-              membantu mengurangi human error, mempercepat akses informasi, dan
-              meningkatkan kolaborasi antar pihak.
+              Semua proses adopsi, donasi, dan edukasi satwa kini bisa dilakukan
+              secara digital, transparan, dan efisien. Platform ini membantu
+              mempercepat aksi nyata dan memperluas jangkauan perlindungan
+              satwa.
             </CardDescription>
             <CardDescription className="text-base xl:text-lg">
-              Dengan adanya sistem ini, kolaborasi antara admin, asisten, dan
-              praktikan menjadi lebih terstruktur.
+              Dengan Sahabat Satwa, kolaborasi untuk kesejahteraan hewan menjadi
+              lebih mudah dan terstruktur.
             </CardDescription>
           </CardContent>
         </Card>
@@ -47,18 +47,18 @@ export default function Feature() {
               src={
                 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158'
               }
-              alt="Manajemen Data Praktikan"
+              alt="Manajemen Data Satwa"
               width={1024}
               height={1024}
               className="rounded-lg object-cover object-center lg:h-45 xl:h-40"
             />
             <CardTitle className="text-xl sm:text-2xl">
-              Manajemen Data Praktikan
+              Manajemen Data Satwa
             </CardTitle>
             <CardDescription className="text-base xl:text-lg">
-              Admin dapat mengelola data praktikan, kelas, dan jadwal dengan
-              mudah. Praktikan dapat melihat jadwal, nilai, dan kehadiran mereka
-              secara real-time.
+              Relawan dan admin dapat mengelola data satwa, adopsi, dan
+              kebutuhan hewan dengan mudah. Pecinta satwa dapat melihat profil
+              hewan, status adopsi, dan kebutuhan donasi secara real-time.
             </CardDescription>
           </CardContent>
         </Card>
@@ -68,18 +68,18 @@ export default function Feature() {
               src={
                 'https://images.unsplash.com/photo-1528901166007-3784c7dd3653'
               }
-              alt="Peran Asisten Praktikum"
+              alt="Peran Relawan Satwa"
               width={1024}
               height={1024}
               className="h-35 rounded-lg object-cover object-center"
             />
             <CardTitle className="text-xl sm:text-2xl">
-              Peran Asisten Praktikum
+              Peran Relawan Satwa
             </CardTitle>
             <CardDescription className="text-base xl:text-lg">
-              Asisten dapat mengelola kehadiran, penilaian, dan laporan
-              praktikum secara online. Kolaborasi antara admin, asisten, dan
-              praktikan menjadi lebih mudah.
+              Relawan dapat membantu perawatan, edukasi, dan kampanye adopsi
+              satwa secara online. Kolaborasi antara relawan, donatur, dan admin
+              menjadi lebih mudah.
             </CardDescription>
           </CardContent>
         </Card>
@@ -89,7 +89,7 @@ export default function Feature() {
               src={
                 'https://images.unsplash.com/photo-1587691592099-24045742c181'
               }
-              alt="Integrasi & Transparansi"
+              alt="Integrasi & Transparansi Satwa"
               width={1024}
               height={1024}
               className="w-full rounded-lg object-cover object-center lg:h-45 xl:h-50"
@@ -98,9 +98,9 @@ export default function Feature() {
               Integrasi & Transparansi
             </CardTitle>
             <CardDescription className="text-base xl:text-lg">
-              Semua data dan proses praktikum terintegrasi dalam satu platform.
-              Setiap user (admin, asisten, praktikan) memiliki akses sesuai
-              peran dan kebutuhan.
+              Semua data dan proses perlindungan satwa terintegrasi dalam satu
+              platform. Setiap pengguna (relawan, donatur, admin) memiliki akses
+              sesuai peran dan kebutuhan.
             </CardDescription>
           </CardContent>
         </Card>
