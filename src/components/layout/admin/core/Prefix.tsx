@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronsUpDown, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 
@@ -26,10 +26,10 @@ async function getEvent(): Promise<Event[]> {
 }
 
 export default async function Prefix() {
-  const event = await getEvent();
+  // const event = await getEvent();
   return (
     <>
-      <Link href={'/admin/event'}>
+      {/* <Link href={'/admin/event'}>
         <Button variant={'outline'} className="cursor-pointer rounded-full">
           Event:{' '}
           {event
@@ -38,7 +38,7 @@ export default async function Prefix() {
             .join(' ') || 'Tidak ada event aktif'}
           <ChevronsUpDown />
         </Button>
-      </Link>
+      </Link> */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={'outline'} className="rounded-full px-2">

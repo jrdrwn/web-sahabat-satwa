@@ -3,125 +3,98 @@ import { Hono } from 'hono';
 
 export const overview = new Hono().basePath('/overview');
 
-overview.get('/', async (c) => {
-  // Jumlah total
-  const total_praktikan = await prisma.praktikan.count();
-  const total_asisten = await prisma.asisten.count();
-  const total_kelas = await prisma.kelas.count();
-  const total_ruangan = await prisma.ruangan.count();
+// 1. Riwayat kunjungan hewan
+overview.get('/animal/:id/visits', async (c) => {
+  const animalId = Number(c.req.param('id'));
+  if (Number.isNaN(animalId)) {
+    return c.json({ error: 'invalid animalId' }, 400);
+  }
 
-  // Ambil dan ubah struktur jadwal
-  const jadwalRaw = await prisma.jadwal.findMany({
-    where: {
-      kelas: {
-        asisten_id: {
-          not: null,
-        },
-      },
-    },
-    select: {
-      id: true,
-      mulai: true,
-      selesai: true,
-      is_dilaksanakan: true,
-      ruangan: {
-        select: {
-          id: true,
-          nama: true,
-        },
-      },
-      kelas: {
-        select: {
-          id: true,
-          nama: true,
-          mata_kuliah: {
-            select: {
-              id: true,
-              kode: true,
-              nama: true,
-            },
-          },
-          asisten: {
-            select: {
-              id: true,
-              nim: true,
-              nama: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  try {
+    const rows = await prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`CALL public.sp_get_animal_visit_history(${animalId}::INT, NULL::REFCURSOR)`;
+      const data = await tx.$queryRawUnsafe(`FETCH ALL FROM cur_animal_visit`);
+      await tx.$executeRawUnsafe(`CLOSE cur_animal_visit`);
+      return data as unknown[];
+    });
 
-  const jadwal = jadwalRaw.map((j) => ({
-    ruang: j.ruangan,
-    kelas: {
-      id: j.kelas?.id,
-      nama: j.kelas?.nama,
-    },
-    mata_kuliah_praktikum: j.kelas?.mata_kuliah,
-    asisten: j.kelas?.asisten,
-    detail: {
-      id: j.id,
-      mulai: j.mulai,
-      selesai: j.selesai,
-      is_dilaksanakan: j.is_dilaksanakan,
-    },
-  }));
+    return c.json({ data: rows });
+  } catch (error: any) {
+    console.error('Error in sp_get_animal_visit_history:', error?.message);
+    return c.json({ error: 'Failed to get animal visit history' }, 500);
+  }
+});
 
-  // Ambil dan ubah struktur laporan
-  const laporanRaw = await prisma.kelas.findMany({
-    where: {
-      NOT: {
-        asisten_id: null,
-      },
-    },
-    select: {
-      id: true,
-      nama: true,
-      kapasitas_praktikan: true,
-      mata_kuliah: {
-        select: {
-          id: true,
-          nama: true,
-          kode: true,
-        },
-      },
-      asisten: {
-        select: {
-          id: true,
-          nim: true,
-          email: true,
-          nama: true,
-          status: true,
-        },
-      },
-    },
-  });
+// 2. Daftar hewan per jenis
+overview.get('/animal-type/:id/animals', async (c) => {
+  const atId = Number(c.req.param('id'));
+  if (Number.isNaN(atId)) {
+    return c.json({ error: 'invalid animal type id' }, 400);
+  }
 
-  const laporan = laporanRaw.map((k) => ({
-    asisten: k.asisten,
-    kelas: {
-      id: k.id,
-      nama: k.nama,
-    },
-    mata_kuliah_praktikum: {
-      id: k.mata_kuliah?.id,
-      nama: k.mata_kuliah?.nama,
-      kode: k.mata_kuliah?.kode,
-      kapasitas_praktikan: k.kapasitas_praktikan,
-    },
-  }));
+  try {
+    const rows = await prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`CALL public.sp_get_animals_by_type(${atId}::INT, NULL::REFCURSOR)`;
+      const data = await tx.$queryRawUnsafe(
+        `FETCH ALL FROM cur_animals_by_type`,
+      );
+      await tx.$executeRawUnsafe(`CLOSE cur_animals_by_type`);
+      return data as unknown[];
+    });
 
-  return c.json({
-    status: true,
-    data: {
-      total_praktikan,
-      total_asisten,
-      total_kelas,
-      total_ruangan,
-      jadwal,
-      laporan,
-    },
-  });
+    return c.json({ data: rows });
+  } catch (error: any) {
+    console.error('Error in sp_get_animals_by_type:', error?.message);
+    return c.json({ error: 'Failed to get animals by type' }, 500);
+  }
+});
+
+// 3. Daftar kunjungan dalam rentang tanggal
+overview.get('/visits/range', async (c) => {
+  const startDate = c.req.query('start_date');
+  const endDate = c.req.query('end_date');
+
+  if (!startDate || !endDate) {
+    return c.json(
+      {
+        error: 'Missing required parameters: start_date and end_date',
+        example: '/api/visits/range?start_date=2025-03-01&end_date=2025-06-30',
+      },
+      400,
+    );
+  }
+
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(startDate) || !dateRegex.test(endDate)) {
+    return c.json(
+      {
+        error: 'Invalid date format. Use YYYY-MM-DD format',
+        example: '2025-03-01',
+      },
+      400,
+    );
+  }
+
+  try {
+    const rows = await prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`CALL public.sp_get_visits_in_range(${startDate}::date, ${endDate}::date, 'cur_visits_in_range')`;
+      const data = await tx.$queryRawUnsafe(
+        `FETCH ALL FROM cur_visits_in_range`,
+      );
+      await tx.$executeRawUnsafe(`CLOSE cur_visits_in_range`);
+      return data as unknown[];
+    });
+
+    return c.json({
+      data: rows,
+      metadata: {
+        start_date: startDate,
+        end_date: endDate,
+        total_visits: rows.length,
+      },
+    });
+  } catch (error) {
+    console.error('Error calling sp_get_visits_in_range:', error);
+    return c.json({ error: 'Failed to get visits in range' }, 500);
+  }
 });

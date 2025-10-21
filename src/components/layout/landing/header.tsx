@@ -30,12 +30,12 @@ export default function Header() {
       href: '/admin',
     },
     {
-      title: 'Asisten',
-      href: '/asisten',
+      title: 'Vet',
+      href: '/vet',
     },
     {
-      title: 'Praktikan',
-      href: '/praktikan',
+      title: 'Owner',
+      href: '/owner',
     },
   ];
 
@@ -52,7 +52,7 @@ export default function Header() {
         >
           <Button className="rounded-full">
             <Biohazard />
-            <span className="">Labora</span>
+            <span className="">Sahabat Satwa</span>
           </Button>
         </Link>
         <div className="flex items-center gap-4">

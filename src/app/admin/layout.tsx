@@ -15,24 +15,10 @@ export default async function AdminLayout({
     return <LoginPage />;
   }
 
-  const res = await fetch(`${process.env.APP_URL}/api/admin/event`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'authorization': `Bearer ${_cookies.get('token')?.value}`,
-    },
-  });
-  if (res.status === 401) {
-    return <LoginPage />;
-  }
-  const json = await res.json();
-  if (!res.ok) {
-    throw new Error(json.message || 'Gagal mengambil event');
-  }
-
   return (
     <>
       <Header
-        suffix={'Labora'}
+        suffix={'Sahabat Satwa'}
         prefix={<Prefix />}
         menus={[
           {
@@ -40,32 +26,44 @@ export default async function AdminLayout({
             href: '/admin',
           },
           {
-            title: 'Ruangan',
-            href: '/admin/ruangan',
+            title: 'Vet',
+            href: '/admin/vet',
           },
           {
-            title: 'Mata Kuliah',
-            href: '/admin/mata-kuliah',
+            title: 'Owners',
+            href: '/admin/owners',
           },
           {
-            title: 'Kelas',
-            href: '/admin/kelas',
+            title: 'Clinic',
+            href: '/admin/clinic',
           },
           {
-            title: 'Jadwal',
-            href: '/admin/jadwal',
+            title: 'Drug',
+            href: '/admin/drug',
           },
           {
-            title: 'Asisten',
-            href: '/admin/asisten',
+            title: 'Animal Type',
+            href: '/admin/animal-type',
           },
           {
-            title: 'Praktikan',
-            href: '/admin/praktikan',
+            title: 'Specialisation',
+            href: '/admin/specialisation',
           },
           {
-            title: 'Laporan',
-            href: '/admin/laporan',
+            title: 'Animal',
+            href: '/admin/animal',
+          },
+          {
+            title: 'Visit',
+            href: '/admin/visit',
+          },
+          {
+            title: 'Visit Drug',
+            href: '/admin/visit-drug',
+          },
+          {
+            title: 'Specialisation Visit',
+            href: '/admin/specialisation-visit',
           },
         ]}
       />

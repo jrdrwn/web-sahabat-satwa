@@ -3,17 +3,20 @@ import { env } from 'hono/adapter';
 import { except } from 'hono/combine';
 import { jwt } from 'hono/jwt';
 
+import { Role } from '../../constants';
 import { JWTPayload } from '../../types';
-import { asisten } from './asisten';
+import { animal } from './animal';
+import { animalType } from './animal-type';
 import { auth } from './auth';
-import { event } from './event';
-import { jadwal } from './jadwal';
-import { kelas } from './kelas';
-import { laporan } from './laporan';
-import { mataKuliah } from './mata-kuliah';
+import { clinic } from './clinic';
+import { drug } from './drug';
 import { overview } from './overview';
-import { praktikan } from './praktikan';
-import { ruangan } from './ruangan';
+import { owner } from './owners';
+import { specialisation } from './specialisation';
+import { specialisationVisit } from './specialisation-visit';
+import { vet } from './vet';
+import { visit } from './visit';
+import { visitDrug } from './visit-drug';
 
 export const admin = new Hono().basePath('/admin');
 
@@ -32,7 +35,7 @@ admin.use(
   '/*',
   except('*/*/login', async (c, next) => {
     const jwtPayload = c.get('jwtPayload') as JWTPayload;
-    if (jwtPayload.role !== 'admin') {
+    if (jwtPayload.role !== Role.ADMIN) {
       return c.json({ status: false, message: 'Unauthorized' }, 401);
     }
     return next();
@@ -44,12 +47,14 @@ admin.get('/echo', (c) => {
 });
 
 admin.route('/', auth);
-admin.route('/', event);
-admin.route('/', ruangan);
-admin.route('/', mataKuliah);
-admin.route('/', kelas);
-admin.route('/', jadwal);
-admin.route('/', asisten);
-admin.route('/', praktikan);
+admin.route('/', vet);
+admin.route('/', owner);
+admin.route('/', clinic);
+admin.route('/', drug);
+admin.route('/', animalType);
+admin.route('/', specialisation);
+admin.route('/', animal);
+admin.route('/', visit);
+admin.route('/', visitDrug);
+admin.route('/', specialisationVisit);
 admin.route('/', overview);
-admin.route('/', laporan);

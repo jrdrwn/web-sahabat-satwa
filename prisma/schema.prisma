@@ -5,197 +5,133 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model animal {
+  animal_id   Int         @id @default(autoincrement())
+  animal_name String      @db.VarChar(40)
+  animal_born DateTime?   @db.Date
+  owner_id    Int
+  at_id       Int
+  animal_type animal_type @relation(fields: [at_id], references: [at_id], onDelete: NoAction, onUpdate: NoAction)
+  owners      owners      @relation(fields: [owner_id], references: [owner_id], onDelete: NoAction, onUpdate: NoAction)
+  visit       visit[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model animal_type {
+  at_id          Int      @id @default(autoincrement())
+  at_description String   @db.VarChar(40)
+  animal         animal[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model clinic {
+  clinic_id      Int          @id @default(autoincrement())
+  clinic_name    String       @db.VarChar(50)
+  clinic_address String?      @db.VarChar(80)
+  clinic_phone   String?      @db.VarChar(14)
+  spec_visit     spec_visit[]
+  vet            vet[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model drug {
+  drug_id    Int          @id @default(autoincrement())
+  drug_name  String       @db.VarChar(50)
+  drug_usage String?      @db.VarChar(100)
+  visit_drug visit_drug[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model owners {
+  owner_id         Int      @id @default(autoincrement())
+  owner_givenname  String   @db.VarChar(30)
+  owner_familyname String   @db.VarChar(30)
+  owner_address    String?  @db.VarChar(100)
+  owner_phone      String?  @db.VarChar(14)
+  email            String?  @unique @db.VarChar(100)
+  password         String?  @db.VarChar(255)
+  animal           animal[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model spec_visit {
+  clinic_id Int
+  vet_id    Int
+  sv_count  Int?
+  clinic    clinic @relation(fields: [clinic_id], references: [clinic_id], onDelete: NoAction, onUpdate: NoAction)
+  vet       vet    @relation(fields: [vet_id], references: [vet_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([clinic_id, vet_id])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model specialisation {
+  spec_id          Int    @id @default(autoincrement())
+  spec_description String @db.VarChar(30)
+  vet              vet[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model vet {
+  vet_id         Int             @id @default(autoincrement())
+  vet_title      String?         @db.Char(4)
+  vet_givenname  String          @db.VarChar(30)
+  vet_familyname String          @db.VarChar(30)
+  vet_phone      String?         @db.VarChar(14)
+  vet_employed   DateTime?       @db.Date
+  spec_id        Int?
+  clinic_id      Int?
+  email          String?         @unique @db.VarChar(100)
+  password       String?         @db.VarChar(255)
+  spec_visit     spec_visit[]
+  clinic         clinic?         @relation(fields: [clinic_id], references: [clinic_id], onDelete: NoAction, onUpdate: NoAction)
+  specialisation specialisation? @relation(fields: [spec_id], references: [spec_id], onDelete: NoAction, onUpdate: NoAction)
+  visit          visit[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model visit {
+  visit_id        Int          @id @default(autoincrement())
+  visit_date_time DateTime?    @db.Timestamp(6)
+  visit_notes     String?      @db.VarChar(200)
+  animal_id       Int
+  vet_id          Int
+  from_visit_id   Int?
+  animal          animal       @relation(fields: [animal_id], references: [animal_id], onDelete: NoAction, onUpdate: NoAction)
+  visit           visit?       @relation("visitTovisit", fields: [from_visit_id], references: [visit_id], onDelete: NoAction, onUpdate: NoAction)
+  other_visit     visit[]      @relation("visitTovisit")
+  vet             vet          @relation(fields: [vet_id], references: [vet_id], onDelete: NoAction, onUpdate: NoAction)
+  visit_drug      visit_drug[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model visit_drug {
+  visit_id               Int
+  drug_id                Int
+  visit_drug_dose        String? @db.VarChar(20)
+  visit_drug_frequency   String? @db.VarChar(20)
+  visit_drug_qtysupplied Int?
+  drug                   drug    @relation(fields: [drug_id], references: [drug_id], onDelete: NoAction, onUpdate: NoAction)
+  visit                  visit   @relation(fields: [visit_id], references: [visit_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([visit_id, drug_id])
+}
+
 model admin {
-  id          Int           @id @default(autoincrement())
-  nama        String?       @db.VarChar(100)
-  password    String?       @db.VarChar(100)
-  email       String?       @unique(map: "email") @db.VarChar(120)
-  event       event[]
-  kelas       kelas[]
-  mata_kuliah mata_kuliah[]
-  ruangan     ruangan[]
+  id       Int    @id @default(autoincrement())
+  username String @unique @db.VarChar(50)
+  email    String @unique @db.VarChar(100)
+  password String @db.VarChar(255)
+  name     String @db.VarChar(100)
 }
 
-model asisten {
-  id                    Int             @id @default(autoincrement())
-  nim                   String?         @unique(map: "nim") @db.VarChar(20)
-  email                 String?         @unique(map: "email") @db.VarChar(120)
-  nama                  String?         @db.VarChar(120)
-  status                asisten_status?
-  komitmen_url          String?         @db.Text
-  dokumen_pendukung_url String?         @db.Text
-  event_id              Int?
-  mata_kuliah_pilihan   Json?
-  event                 event?          @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "asisten_ibfk_1")
-  kelas                 kelas[]
-
-  @@index([event_id], map: "event_id")
-}
-
-model event {
-  id        Int          @id @default(autoincrement())
-  admin_id  Int?
-  jenis     event_jenis?
-  mulai     DateTime?    @db.Timestamp(0)
-  selesai   DateTime?    @db.Timestamp(0)
-  is_aktif  Boolean      @default(false)
-  asisten   asisten[]
-  admin     admin?       @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "event_ibfk_1")
-  praktikan praktikan[]
-
-  @@index([admin_id], map: "admin_id")
-}
-
-model penilaian {
-  id           Int             @id @default(autoincrement())
-  laporan_id   Int?
-  praktikan_id Int?
-  tipe         penilaian_tipe?
-  nilai        Float?
-  laporan      laporan?        @relation(fields: [laporan_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "penilaian_ibfk_1")
-  praktikan    praktikan?      @relation(fields: [praktikan_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "penilaian_ibfk_2")
-
-  @@index([laporan_id], map: "laporan_id")
-  @@index([praktikan_id], map: "praktikan_id")
-}
-
-model praktikan {
-  id              Int               @id @default(autoincrement())
-  nim             String?           @unique(map: "nim") @db.VarChar(20)
-  email           String?           @unique(map: "email") @db.VarChar(120)
-  nama            String?           @db.VarChar(120)
-  event_id        Int?
-  kehadiran       kehadiran[]
-  penilaian       penilaian[]
-  event           event?            @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "praktikan_ibfk_1")
-  praktikan_kelas praktikan_kelas[]
-
-  @@index([event_id], map: "event_id")
-}
-
-model jadwal {
-  id              Int       @id @default(autoincrement())
-  ruang_id        Int?
-  kelas_id        Int?
-  mulai           DateTime? @db.Timestamp(0)
-  selesai         DateTime? @db.Timestamp(0)
-  is_dilaksanakan Boolean?  @default(false)
-  ruangan         ruangan?  @relation(fields: [ruang_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "jadwal_ibfk_1")
-  kelas           kelas?    @relation(fields: [kelas_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "jadwal_ibfk_2")
-  laporan         laporan[]
-
-  @@index([kelas_id], map: "kelas_id")
-  @@index([ruang_id], map: "ruang_id")
-}
-
-model kehadiran {
-  id           Int             @id @default(autoincrement())
-  laporan_id   Int?
-  praktikan_id Int?
-  tipe         kehadiran_tipe?
-  laporan      laporan?        @relation(fields: [laporan_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "kehadiran_ibfk_1")
-  praktikan    praktikan?      @relation(fields: [praktikan_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "kehadiran_ibfk_2")
-
-  @@index([laporan_id], map: "laporan_id")
-  @@index([praktikan_id], map: "praktikan_id")
-}
-
-model kelas {
-  id                  Int               @id @default(autoincrement())
-  nama                String?           @db.VarChar(120)
-  kapasitas_praktikan Int?
-  mata_kuliah_id      Int?
-  asisten_id          Int?
-  admin_id            Int?
-  jadwal              jadwal[]
-  mata_kuliah         mata_kuliah?      @relation(fields: [mata_kuliah_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "kelas_ibfk_1")
-  asisten             asisten?          @relation(fields: [asisten_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "kelas_ibfk_2")
-  admin               admin?            @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "kelas_ibfk_3")
-  praktikan_kelas     praktikan_kelas[]
-
-  @@index([admin_id], map: "admin_id")
-  @@index([asisten_id], map: "asisten_id")
-  @@index([mata_kuliah_id], map: "mata_kuliah_id")
-}
-
-model laporan {
-  id                  Int         @id @default(autoincrement())
-  jadwal_id           Int?
-  judul               String?     @db.VarChar(120)
-  bukti_pertemuan_url String?     @db.Text
-  kehadiran           kehadiran[]
-  jadwal              jadwal?     @relation(fields: [jadwal_id], references: [id], onUpdate: NoAction, map: "laporan_ibfk_1")
-  penilaian           penilaian[]
-
-  @@index([jadwal_id], map: "jadwal_id")
-}
-
-model mata_kuliah {
-  id       Int     @id @default(autoincrement())
-  kode     String? @unique(map: "kode") @db.VarChar(120)
-  nama     String? @db.VarChar(120)
-  admin_id Int?
-  kelas    kelas[]
-  admin    admin?  @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "mata_kuliah_ibfk_1")
-
-  @@index([admin_id], map: "admin_id")
-}
-
-model praktikan_kelas {
-  id           Int                        @id @default(autoincrement())
-  praktikan_id Int?
-  kelas_id     Int?
-  perangkat    praktikan_kelas_perangkat?
-  created_at   DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_at   DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
-  praktikan    praktikan?                 @relation(fields: [praktikan_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "praktikan_kelas_ibfk_1")
-  kelas        kelas?                     @relation(fields: [kelas_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "praktikan_kelas_ibfk_2")
-
-  @@index([kelas_id], map: "kelas_id")
-  @@index([praktikan_id], map: "praktikan_id")
-}
-
-model ruangan {
-  id        Int      @id @default(autoincrement())
-  nama      String?  @db.VarChar(100)
-  kapasitas Json?
-  admin_id  Int?
-  jadwal    jadwal[]
-  admin     admin?   @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ruangan_ibfk_1")
-
-  @@index([admin_id], map: "admin_id")
-}
-
-enum event_jenis {
-  pendaftaran_asisten
-  pendaftaran_praktikan
-  praktikum
-}
-
-enum penilaian_tipe {
-  pretest
-  laporan
-  praktikum
-  responsi
-}
-
-enum praktikan_kelas_perangkat {
-  laptop
-  komputer_lab
-}
-
-enum kehadiran_tipe {
-  hadir
-  izin
-  alpha
-}
-
-enum asisten_status {
-  diproses
-  diterima
-  ditolak
+enum role {
+  admin
+  vet
+  owner
 }

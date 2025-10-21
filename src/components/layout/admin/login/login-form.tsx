@@ -67,6 +67,7 @@ export default function LoginForm() {
       router.refresh();
     } else {
       toast('Login Gagal', {
+        description: json.message,
         icon: <BadgeAlert />,
       });
     }

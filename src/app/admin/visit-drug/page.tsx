@@ -1,0 +1,11 @@
+import ListVisitDrug from '@/components/layout/admin/visit-drug/list';
+
+export default function AnimalTypePage() {
+  return (
+    <>
+      <section className="m-8 pb-8">
+        <ListVisitDrug />
+      </section>
+    </>
+  );
+}

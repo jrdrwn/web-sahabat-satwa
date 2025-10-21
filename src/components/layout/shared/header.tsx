@@ -35,11 +35,11 @@ export default function Header({ suffix, menus, prefix }: Props) {
   return (
     <>
       {[
-        '/asisten/login',
+        '/owner/login',
         '/admin/login',
-        '/asisten/register',
-        '/praktikan/register',
-        '/praktikan/login',
+        '/owner/register',
+        '/vet/register',
+        '/vet/login',
       ].includes(pathname) ? null : (
         <header className="fixed inset-x-0 top-0 z-9 h-16 border-b-2 bg-background">
           <div className="flex h-full w-full items-center justify-between bg-background px-4">
