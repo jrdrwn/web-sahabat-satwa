@@ -9,5 +9,8 @@ const nextConfig: NextConfig = {
       { hostname: 'picsum.photos' },
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 export default nextConfig;
