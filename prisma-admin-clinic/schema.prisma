@@ -1,12 +1,12 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../node_modules/.prisma/admin"
+  output          = "../node_modules/.prisma/admin-clinic"
   previewFeatures = ["typedSql"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("ADMIN_DATABASE_URL")
+  url      = env("ADMIN_CLINIC_DATABASE_URL")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -123,14 +123,6 @@ model visit_drug {
   @@id([visit_id, drug_id])
 }
 
-model admin {
-  id       Int    @id @default(autoincrement())
-  username String @unique @db.VarChar(50)
-  email    String @unique @db.VarChar(100)
-  password String @db.VarChar(255)
-  name     String @db.VarChar(100)
-}
-
 model admin_clinic {
   id        Int    @id @default(autoincrement())
   username  String @unique @db.VarChar(50)
@@ -140,6 +132,10 @@ model admin_clinic {
   clinic_id Int
   clinic    clinic @relation(fields: [clinic_id], references: [clinic_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_admin_clinic_clinic")
 }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model admin {
+// }
 
 enum role {
   admin

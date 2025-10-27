@@ -22,6 +22,7 @@
       "@/*": ["./src/*"],
       "@db": ["./prisma/"],
       "@db/admin": ["./prisma-admin/"],
+      "@db/admin-clinic": ["./prisma-admin-clinic/"],
       "@db/vet": ["./prisma-vet/"],
       "@db/owner": ["./prisma-owner/"]
     }
