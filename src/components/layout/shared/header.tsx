@@ -35,6 +35,7 @@ export default function Header({ suffix, menus, prefix }: Props) {
   return (
     <>
       {[
+        '/admin-clinic/login',
         '/owner/login',
         '/admin/login',
         '/owner/register',

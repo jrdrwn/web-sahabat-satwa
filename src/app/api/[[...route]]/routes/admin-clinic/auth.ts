@@ -29,7 +29,7 @@ auth.post(
 
     const validated = c.req.valid('json');
 
-    const user = await prisma.admin.findUnique({
+    const user = await prisma.admin_clinic.findUnique({
       where: {
         email: validated.identifier,
       },
@@ -46,7 +46,7 @@ auth.post(
     }
     const payload = {
       sub: user.id,
-      role: Role.ADMIN,
+      role: Role.ADMIN_CLINIC,
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day
     };
     const token = await sign(payload, JWT_SECRET);

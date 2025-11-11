@@ -30,6 +30,10 @@ export default function Header() {
       href: '/admin/login',
     },
     {
+      title: 'Adminc Clinic',
+      href: '/admin-clinic/login',
+    },
+    {
       title: 'Vet',
       href: '/vet/login',
     },

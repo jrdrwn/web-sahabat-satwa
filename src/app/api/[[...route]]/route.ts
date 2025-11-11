@@ -3,6 +3,7 @@ import { type JwtVariables } from 'hono/jwt';
 import { handle } from 'hono/vercel';
 
 import { admin } from './routes/admin';
+import { adminClinic } from './routes/admin-clinic';
 import { owner } from './routes/owner';
 import { vet } from './routes/vet';
 
@@ -15,6 +16,7 @@ const app = new Hono<{
 app.route('/', admin);
 app.route('/', vet);
 app.route('/', owner);
+app.route('/', adminClinic);
 
 export const GET = handle(app);
 export const POST = handle(app);

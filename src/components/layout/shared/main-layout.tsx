@@ -13,7 +13,12 @@ export default function MainLayout({
     <main
       className={cn(
         'h-svh',
-        ['/admin/login', '/vet/login', '/vet/register'].includes(pathname)
+        [
+          '/admin/login',
+          '/admin-clinic/login',
+          '/vet/login',
+          '/vet/register',
+        ].includes(pathname)
           ? null
           : 'pt-16',
       )}

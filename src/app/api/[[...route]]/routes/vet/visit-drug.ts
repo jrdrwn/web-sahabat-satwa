@@ -8,9 +8,14 @@ export const visitDrug = new Hono().basePath('/visit-drug');
 // GET all visit_drug
 visitDrug.get('/', async (c) => {
   const jwtPayload = c.get('jwtPayload') as JWTPayload;
+
+  const vet = await prisma.vet.findUnique({
+    where: { vet_id: jwtPayload.sub },
+  });
   const data = await prisma.$queryRaw`SELECT * FROM visit_drug
   JOIN visit ON visit_drug.visit_id = visit.visit_id
-  WHERE visit.vet_id = ${jwtPayload.sub}
+    JOIN vet ON visit.vet_id = vet.vet_id
+  WHERE visit.vet_id = ${jwtPayload.sub} AND vet.clinic_id = ${vet?.clinic_id}
   `;
   return c.json({ data });
 });

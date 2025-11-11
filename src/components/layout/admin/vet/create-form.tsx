@@ -11,9 +11,15 @@ import {
 } from '@/components/ui/expansions/responsive-modal';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useGetCookie } from 'cookies-next/client';
-import { PlusCircle } from 'lucide-react';
+import { Eye, EyeOff, PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -28,6 +34,8 @@ const formSchema = z.object({
   vet_employed: z.string().min(1, 'Tanggal mulai bekerja harus diisi'), // ISO date string
   spec_id: z.coerce.number().min(1, 'ID spesialisasi harus diisi'),
   clinic_id: z.coerce.number().min(1, 'ID klinik harus diisi'),
+  email: z.string().email('Email tidak valid').min(1, 'Email harus diisi'),
+  password: z.string().min(8, 'Password harus memiliki minimal 8 karakter'),
 });
 
 function CreateFormVet({
@@ -37,6 +45,7 @@ function CreateFormVet({
 }) {
   const _cookies = useGetCookie();
   const router = useRouter();
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,6 +57,8 @@ function CreateFormVet({
       vet_employed: '',
       spec_id: 1,
       clinic_id: 1,
+      email: '',
+      password: '',
     },
   });
 
@@ -140,6 +151,52 @@ function CreateFormVet({
           <Field data-invalid={fieldState.invalid}>
             <FieldLabel htmlFor={field.name}>Tanggal Mulai Bekerja</FieldLabel>
             <Input aria-invalid={fieldState.invalid} {...field} type="date" />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+      <Controller
+        control={form.control}
+        name="email"
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+            <Input
+              aria-invalid={fieldState.invalid}
+              {...field}
+              type="email"
+              placeholder="Masukkan email"
+            />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+
+      <Controller
+        control={form.control}
+        name="password"
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+            <InputGroup>
+              <InputGroupInput
+                aria-invalid={fieldState.invalid}
+                {...field}
+                type={passwordVisible ? 'text' : 'password'}
+                placeholder="Masukkan password"
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                >
+                  {passwordVisible ? (
+                    <EyeOff className="text-primary" />
+                  ) : (
+                    <Eye className="text-primary" />
+                  )}
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>
         )}

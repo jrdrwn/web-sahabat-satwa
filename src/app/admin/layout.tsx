@@ -26,16 +26,20 @@ export default async function AdminLayout({
             href: '/admin',
           },
           {
+            title: 'Clinic',
+            href: '/admin/clinic',
+          },
+          {
+            title: 'Admin Clinic',
+            href: '/admin/admin-clinic',
+          },
+          {
             title: 'Vet',
             href: '/admin/vet',
           },
           {
             title: 'Owners',
             href: '/admin/owners',
-          },
-          {
-            title: 'Clinic',
-            href: '/admin/clinic',
           },
           {
             title: 'Drug',

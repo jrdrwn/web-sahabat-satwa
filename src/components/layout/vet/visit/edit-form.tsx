@@ -27,7 +27,6 @@ const visitFormSchema = z.object({
   visit_date_time: z.string().optional(),
   visit_notes: z.string().optional(),
   animal_id: z.coerce.number(),
-  vet_id: z.coerce.number(),
   from_visit_id: z.coerce.number().optional(),
 });
 
@@ -46,7 +45,6 @@ function EditFormVisit({
       visit_date_time: defaultValues.visit_date_time || '',
       visit_notes: defaultValues.visit_notes || '',
       animal_id: defaultValues.animal_id,
-      vet_id: defaultValues.vet_id,
       from_visit_id: defaultValues.from_visit_id,
     },
   });
@@ -117,22 +115,6 @@ function EditFormVisit({
               aria-invalid={fieldState.invalid}
               {...field}
               placeholder="ID hewan"
-            />
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
-      <Controller
-        control={form.control}
-        name="vet_id"
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor={field.name}>ID Dokter</FieldLabel>
-            <Input
-              type="number"
-              aria-invalid={fieldState.invalid}
-              {...field}
-              placeholder="ID dokter"
             />
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>

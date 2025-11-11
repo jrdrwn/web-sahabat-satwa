@@ -133,9 +133,13 @@ model admin_clinic {
   clinic    clinic @relation(fields: [clinic_id], references: [clinic_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_admin_clinic_clinic")
 }
 
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model admin {
-// }
+model admin {
+  id       Int    @id @default(autoincrement())
+  username String @unique @db.VarChar(50)
+  email    String @unique @db.VarChar(100)
+  password String @db.VarChar(255)
+  name     String @db.VarChar(100)
+}
 
 enum role {
   admin

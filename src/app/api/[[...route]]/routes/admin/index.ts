@@ -5,6 +5,7 @@ import { jwt } from 'hono/jwt';
 
 import { Role } from '../../constants';
 import { JWTPayload } from '../../types';
+import { adminClinic } from './admin-clinic';
 import { animal } from './animal';
 import { animalType } from './animal-type';
 import { auth } from './auth';
@@ -58,3 +59,4 @@ admin.route('/', visit);
 admin.route('/', visitDrug);
 admin.route('/', specialisationVisit);
 admin.route('/', overview);
+admin.route('/', adminClinic);

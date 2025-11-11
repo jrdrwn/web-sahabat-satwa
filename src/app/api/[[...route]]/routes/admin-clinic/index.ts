@@ -5,6 +5,7 @@ import { jwt } from 'hono/jwt';
 
 import { Role } from '../../constants';
 import { JWTPayload } from '../../types';
+import { adminClinicRoute } from './admin-clinic';
 import { animal } from './animal';
 import { animalType } from './animal-type';
 import { auth } from './auth';
@@ -18,9 +19,9 @@ import { vet } from './vet';
 import { visit } from './visit';
 import { visitDrug } from './visit-drug';
 
-export const admin = new Hono().basePath('/admin-clinic');
+export const adminClinic = new Hono().basePath('/admin-clinic');
 
-admin.use(
+adminClinic.use(
   '/*',
   except('*/*/login', async (c, next) => {
     const { JWT_SECRET } = env<{ JWT_SECRET: string }>(c);
@@ -31,7 +32,7 @@ admin.use(
   }),
 );
 
-admin.use(
+adminClinic.use(
   '/*',
   except('*/*/login', async (c, next) => {
     const jwtPayload = c.get('jwtPayload') as JWTPayload;
@@ -42,19 +43,20 @@ admin.use(
   }),
 );
 
-admin.get('/echo', (c) => {
-  return c.json({ message: 'Hello from admin!' });
+adminClinic.get('/echo', (c) => {
+  return c.json({ message: 'Hello from admin clinic!' });
 });
 
-admin.route('/', auth);
-admin.route('/', vet);
-admin.route('/', owner);
-admin.route('/', clinic);
-admin.route('/', drug);
-admin.route('/', animalType);
-admin.route('/', specialisation);
-admin.route('/', animal);
-admin.route('/', visit);
-admin.route('/', visitDrug);
-admin.route('/', specialisationVisit);
-admin.route('/', overview);
+adminClinic.route('/', auth);
+adminClinic.route('/', vet);
+adminClinic.route('/', owner);
+adminClinic.route('/', clinic);
+adminClinic.route('/', drug);
+adminClinic.route('/', animalType);
+adminClinic.route('/', specialisation);
+adminClinic.route('/', animal);
+adminClinic.route('/', visit);
+adminClinic.route('/', visitDrug);
+adminClinic.route('/', specialisationVisit);
+adminClinic.route('/', overview);
+adminClinic.route('/', adminClinicRoute);
